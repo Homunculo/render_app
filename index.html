@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Upload and print Excel file</title>
+  </head>
+  <body>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+      <input type="file" name="file">
+      <button type="submit">Upload</button>
+    </form>
+
+    <div id="output"></div>
+
+    <script>
+      document.querySelector('form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        fetch('/print', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+          const output = document.querySelector('#output');
+          output.innerHTML = data;
+        })
+        .catch(error => console.error(error));
+      });
+    </script>
+  </body>
+</html>
